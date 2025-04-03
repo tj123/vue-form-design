@@ -1,34 +1,34 @@
-import { ElNotification } from "element-plus";
-import { nanoid } from "nanoid";
-import { AllFormItem, BaseComponentItem, PartialKey } from "@/type";
-import formStore from "@/controller/form";
+import { ElNotification } from 'element-plus'
+import { nanoid } from 'nanoid'
+import { AllFormItem, BaseComponentItem, PartialKey } from '@/type'
+import formStore from '@/controller/form'
 class Flex {
-  lastClickTime: number;
-  openTanc: boolean;
+  lastClickTime: number
+  openTanc: boolean
 
   constructor() {
-    this.lastClickTime = 0;
-    this.openTanc = false; // 是否有弹窗
+    this.lastClickTime = 0
+    this.openTanc = false // 是否有弹窗
   }
   //  防止用户多次点击
   public clickCountLimit(): boolean {
-    let isCanGo = false;
+    let isCanGo = false
 
     if (window.clickCountLimitMock) {
-      return true;
+      return true
     }
     if (!this.lastClickTime) {
-      this.lastClickTime = new Date().getTime();
-      isCanGo = true;
+      this.lastClickTime = new Date().getTime()
+      isCanGo = true
     } else {
-      const shicha = new Date().getTime() - this.lastClickTime;
-      this.lastClickTime = new Date().getTime();
-      isCanGo = shicha >= 1000;
+      const shicha = new Date().getTime() - this.lastClickTime
+      this.lastClickTime = new Date().getTime()
+      isCanGo = shicha >= 1000
     }
     if (!isCanGo) {
-      console.log("手残党点击太快了");
+      console.log('手残党点击太快了')
     }
-    return isCanGo;
+    return isCanGo
   }
   public generateMixed(size?: number) {
     // let res = "";
@@ -36,217 +36,225 @@ class Flex {
     //   const id = Math.ceil(Math.random() * 35);
     //   res += chars[id];
     // }
-    return nanoid(size);
+    return nanoid(size)
   }
   public controlFormRule(controlItems: any[]): any {
-    const rules: any = {};
+    const rules: any = {}
     controlItems.forEach((item: any) => {
-      const rule: any[] = [];
+      const rule: any[] = []
       if (item.data.required) {
         rule.push({
           required: true,
-          message: "请输入" + item.data.label,
-          trigger: "blur",
-        });
-        rules[item.data.fieldName] = rule;
+          message: '请输入' + item.data.label,
+          trigger: 'blur',
+        })
+        rules[item.data.fieldName] = rule
       }
-      if (item.ControlType === "JsonEditor") {
-        rules[item.data.fieldName] = this.getJsonValidate();
+      if (item.ControlType === 'JsonEditor') {
+        rules[item.data.fieldName] = this.getJsonValidate()
       }
-    });
-    return rules;
+    })
+    return rules
   }
   public deepClone(target: any): any {
     // 定义一个变量
-    let result: any;
+    let result: any
     // 如果当前需要深拷贝的是一个对象的话
-    if (typeof target === "object") {
+    if (typeof target === 'object') {
       // 如果是一个数组的话
       if (Array.isArray(target)) {
-        result = []; // 将result赋值为一个数组，并且执行遍历
+        result = [] // 将result赋值为一个数组，并且执行遍历
         for (let i = 0; i < target.length; i++) {
           // 递归克隆数组中的每一项
           if (Object.prototype.hasOwnProperty.call(target, i)) {
-            result.push(this.deepClone(target[i]));
+            result.push(this.deepClone(target[i]))
           }
         }
         // 判断如果当前的值是null的话；直接赋值为null
       } else if (target === null) {
-        result = null;
+        result = null
         // 判断如果当前的值是一个RegExp对象的话，直接赋值
       } else if (target.constructor === RegExp) {
-        result = target;
+        result = target
       } else {
         // 否则是普通对象，直接for in循环，递归赋值对象的所有值
-        result = {};
+        result = {}
         for (const i in target) {
           if (Object.prototype.hasOwnProperty.call(target, i)) {
-            result[i] = this.deepClone(target[i]);
+            result[i] = this.deepClone(target[i])
           }
         }
       }
       // 如果不是对象的话，就是基本数据类型，那么直接赋值
     } else {
-      result = target;
+      result = target
     }
     // 返回最终结果
-    return result;
+    return result
   }
 
   public tryParseJson(json: string) {
     try {
-      return JSON.parse(json);
+      return JSON.parse(json)
     } catch (E) {
       if (json && json.startsWith && json.startsWith('"[')) {
-        return [];
+        return []
       }
-      return {};
+      return {}
     }
   }
-  public open(message: string, title = "Success", type: any = "success") {
+  public open(message: string, title = 'Success', type: any = 'success') {
     ElNotification({
-      title: title || "Success",
+      title: title || 'Success',
       message: message,
       type,
-    });
+    })
   }
   public getJsonValidate() {
     return this.deepClone([
       {
         validator: (rule: any, value: any, callback: (a?: any | undefined) => any) => {
           try {
-            JSON.parse(value);
-            callback();
+            JSON.parse(value)
+            callback()
           } catch (e) {
-            console.error(e);
-            return callback(new Error("请输入正确的json格式"));
+            console.error(e)
+            return callback(new Error('请输入正确的json格式'))
           }
         },
-        trigger: "blur",
+        trigger: 'blur',
       },
-    ]);
+    ])
   }
   // 获取数据类型
   public getDataType(data: any): any {
-    const str: any = Object.prototype.toString.call(data);
-    const reg = /\[object (.*)\]/;
-    return str.match(reg)[1];
+    const str: any = Object.prototype.toString.call(data)
+    const reg = /\[object (.*)\]/
+    return str.match(reg)[1]
   }
   /**
    * json转标准数据格式进行收口
    */
   public jsonToForm(item: AllFormItem) {
     if (!item.data || !item.controlItems) {
-      item = this.deepClone(item);
-      const currentComponent = window.VApp.$formcomponents[item.ControlType as any];
-      item.formConfig = window.VApp.$formcomponents[item.ControlType as any]?.formConfig || {};
+      item = this.deepClone(item)
+      const currentComponent = window.VApp.$formcomponents[item.ControlType as any]
+      item.formConfig = window.VApp.$formcomponents[item.ControlType as any]?.formConfig || {}
       if (!item.data) {
-        item.data = item.formConfig.data();
+        item.data = item.formConfig.data()
       }
 
       if (!item.data.fieldName) {
-        item.data.fieldName = item.ControlType + "_" + this.generateMixed();
+        item.data.fieldName = item.ControlType + '_' + this.generateMixed()
       }
       if (item.layout) {
-        if (item.ControlType == "Grid" && item.data.columns && item.data.columns.length > 0) {
+        if (item.ControlType == 'Grid' && item.data.columns && item.data.columns.length > 0) {
           item.data.columns = item.data.columns.map((colItem: any) => {
             if (colItem.list && colItem.list.length > 0) {
-              colItem.list = this.jsonToForm(colItem.list);
+              colItem.list = this.jsonToForm(colItem.list)
             }
-            return colItem;
-          });
-        } else if (item.ControlType == "TableLayout" && item.data.trs && item.data.trs.length > 0) {
+            return colItem
+          })
+        } else if (item.ControlType == 'TableLayout' && item.data.trs && item.data.trs.length > 0) {
           /**
            * 需要自测一下
            */
           item.data.trs = item.data.trs.map((trItem: any) => {
             trItem.tds.forEach((tdItem: any) => {
               if (tdItem.list && tdItem.list.length > 0) {
-                tdItem.list = this.jsonToForm(tdItem.list);
+                tdItem.list = this.jsonToForm(tdItem.list)
               }
-              return tdItem;
-            });
-            return trItem;
-          });
-        } else if ((item.ControlType == "Collapse" || item.ControlType == "Tabs") && item.data.items && item.data.items.length > 0) {
+              return tdItem
+            })
+            return trItem
+          })
+        } else if (
+          (item.ControlType == 'Collapse' || item.ControlType == 'Tabs') &&
+          item.data.items &&
+          item.data.items.length > 0
+        ) {
           item.data.items = item.data.items.map((colItem: any) => {
             if (colItem.list && colItem.list.length > 0) {
-              colItem.list = this.jsonToForm(colItem.list);
+              colItem.list = this.jsonToForm(colItem.list)
             }
-            return colItem;
-          });
+            return colItem
+          })
         }
       }
       /**
        * 全局动态配置
        */
-      const dynamicList = formStore?.get("globalFormList")?.filter((item: any) => {
+      const dynamicList = formStore?.get('globalFormList')?.filter((item: any) => {
         if (item.dynamic) {
-          return item;
+          return item
         }
-      });
-      item.id = this.generateMixed();
-      let controlItems = item.formConfig.morenConfig().concat(dynamicList);
+      })
+      item.id = this.generateMixed()
+      let controlItems = item.formConfig.morenConfig().concat(dynamicList)
       /**
        * 兼容动作面板,不同表单可能需要的事件不一样
        */
       if (currentComponent.actionType && currentComponent.actionType.length > 0) {
-        console.log(controlItems);
+        console.log(controlItems)
         controlItems.find((item: any) => {
-          if (item.ControlType == "Action") {
+          if (item.ControlType == 'Action') {
             item.data.formConfig = {
               value: {},
               items: [],
-            };
+            }
             currentComponent.actionType.forEach((action: string, index: number) => {
               item.data.formConfig.items.push({
                 label: action,
                 value: action,
                 id: index + 1,
-              });
-            });
+              })
+            })
           }
-        });
+        })
       } else {
         controlItems = controlItems.filter((item: any) => {
-          if (item.ControlType !== "Action") {
-            return item;
+          if (item.ControlType !== 'Action') {
+            return item
           }
-        });
+        })
       }
-      item.rules = this.controlFormRule(controlItems);
-      item.controlItems = controlItems;
+      item.rules = this.controlFormRule(controlItems)
+      item.controlItems = controlItems
     }
-    return item;
+    return item
   }
 
   /**
    * 完整的表单列表数据进行删减,方便展示
    */
   public initFormToJson(formlist: AllFormItem[]) {
-    const jsonData: PartialKey<BaseComponentItem, "icon">[] = [];
+    const jsonData: PartialKey<BaseComponentItem, 'icon'>[] = []
     formlist.forEach((item: AllFormItem) => {
       if (item.layout) {
-        if (item.ControlType == "Grid" && item.data.columns && item.data.columns.length > 0) {
+        if (item.ControlType == 'Grid' && item.data.columns && item.data.columns.length > 0) {
           item.data.columns = item.data.columns.map((colItem: any) => {
-            colItem.list = this.initFormToJson(colItem.list);
-            return colItem;
-          });
-        } else if (item.ControlType == "TableLayout" && item.data.trs && item.data.trs.length > 0) {
+            colItem.list = this.initFormToJson(colItem.list)
+            return colItem
+          })
+        } else if (item.ControlType == 'TableLayout' && item.data.trs && item.data.trs.length > 0) {
           item.data.trs = item.data.trs.map((trItem: any) => {
             trItem.tds.forEach((tdItem: any) => {
               if (tdItem.list && tdItem.list.length > 0) {
-                tdItem.list = this.initFormToJson(tdItem.list);
+                tdItem.list = this.initFormToJson(tdItem.list)
               }
-              return tdItem;
-            });
-            return trItem;
-          });
-        } else if ((item.ControlType == "Collapse" || item.ControlType == "Tabs") && item.data.items && item.data.items.length > 0) {
+              return tdItem
+            })
+            return trItem
+          })
+        } else if (
+          (item.ControlType == 'Collapse' || item.ControlType == 'Tabs') &&
+          item.data.items &&
+          item.data.items.length > 0
+        ) {
           item.data.items = item.data.items.map((colItem: any) => {
-            colItem.list = this.initFormToJson(colItem.list);
-            return colItem;
-          });
+            colItem.list = this.initFormToJson(colItem.list)
+            return colItem
+          })
         }
       }
       const obj = {
@@ -255,25 +263,25 @@ class Flex {
         id: item.id,
         layout: !!item.layout,
         data: item.data,
-      };
-      jsonData.push(obj);
-    });
-    return jsonData;
+      }
+      jsonData.push(obj)
+    })
+    return jsonData
   }
 
   public funcExec(action: string, proxy: any, argus: any = []) {
-    const actionObj = JSON.parse(action || "{}");
-    const funcStr = actionObj.funcStr;
-    eval(`(function(${this.getField(actionObj.methods)}){${funcStr}}).apply(proxy, argus)`);
+    const actionObj = JSON.parse(action || '{}')
+    const funcStr = actionObj.funcStr
+    eval(`(function(${this.getField(actionObj.methods)}){${funcStr}}).apply(proxy, argus)`)
   }
 
   public getField(methods: string) {
-    if (methods == "onChange") {
-      return "value, oldValue, subFormData";
-    } else if (["onForce", "onBlur", "onClick"].includes(methods)) {
-      return "field";
+    if (methods == 'onChange') {
+      return 'value, oldValue, subFormData'
+    } else if (['onForce', 'onBlur', 'onClick'].includes(methods)) {
+      return 'field'
     } else {
-      return "";
+      return ''
     }
   }
 
@@ -286,64 +294,67 @@ class Flex {
   public getFormDataList(item: AllFormItem, result: any = [], fieldName: string) {
     if (!item.layout) {
       if (item.data.fieldName != fieldName) {
-        if (item.nameCn == "开关") {
+        if (item.nameCn == '开关') {
           result.push({
             value: item?.data?.fieldName,
-            label: item?.data?.label + "-" + item?.data?.fieldName,
+            label: item?.data?.label + '-' + item?.data?.fieldName,
             switch: true,
-          });
-          return;
+          })
+          return
         }
         if (item.data.itemConfig) {
-          let multiple = false;
+          let multiple = false
           if (Array.isArray(item.data.itemConfig.value)) {
-            multiple = true;
+            multiple = true
           }
-          const options = item.data.itemConfig.items;
+          const options = item.data.itemConfig.items
           result.push({
             value: item?.data?.fieldName,
-            label: item?.data?.label + "-" + item?.data?.fieldName,
+            label: item?.data?.label + '-' + item?.data?.fieldName,
             multiple,
             options,
-          });
-          return;
+          })
+          return
         }
         result.push({
           value: item?.data?.fieldName,
-          label: item?.data?.label + "-" + item?.data?.fieldName,
-        });
+          label: item?.data?.label + '-' + item?.data?.fieldName,
+        })
       }
     } else {
       if (item.data.fieldName != fieldName) {
         // 容器组件整个部分也可以作为显示条件的一部分
         result.push({
           value: item?.data?.fieldName,
-          label: item?.data?.label + "-" + item?.data?.fieldName,
-        });
-        if (item.ControlType == "Grid" && item.data.columns) {
+          label: item?.data?.label + '-' + item?.data?.fieldName,
+        })
+        if (item.ControlType == 'Grid' && item.data.columns) {
           item.data.columns.forEach((colItem: any) => {
             colItem.list.forEach((listItem: AllFormItem) => {
-              this.getFormDataList(listItem, result, fieldName);
-            });
-          });
-        } else if (item.ControlType == "TableLayout" && item.data.trs) {
+              this.getFormDataList(listItem, result, fieldName)
+            })
+          })
+        } else if (item.ControlType == 'TableLayout' && item.data.trs) {
           item.data.trs.forEach((trItem: any) => {
             trItem.tds.forEach((tdItem: any) => {
               tdItem.list.forEach((listItem: AllFormItem) => {
-                this.getFormDataList(listItem, result, fieldName);
-              });
-            });
-          });
-        } else if ((item.ControlType == "Collapse" || item.ControlType == "Tabs") && item.data.items) {
+                this.getFormDataList(listItem, result, fieldName)
+              })
+            })
+          })
+        } else if (
+          (item.ControlType == 'Collapse' || item.ControlType == 'Tabs') &&
+          item.data.items
+        ) {
           item.data.items.forEach((colItem: any) => {
             colItem.list.forEach((listItem: AllFormItem) => {
-              this.getFormDataList(listItem, result, fieldName);
-            });
-          });
+              this.getFormDataList(listItem, result, fieldName)
+            })
+          })
         }
       }
     }
   }
 }
 
-export default new Flex();
+export default new Flex()

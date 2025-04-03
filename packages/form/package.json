@@ -16,6 +16,7 @@
   },
   "scripts": {
     "build": "vite build",
+    "watch": "vite build --watch",
     "prepublish": "npm version && npm run build"
   },
   "dependencies": {

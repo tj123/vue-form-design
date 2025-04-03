@@ -1,33 +1,17 @@
 <template>
-  <div
-    class="starfish-formitem"
-    :class="{
-      formCover: drag,
-      'starfish-vertical': labelalign != 'top',
-      [item.data.csslist?.join(' ')]: !!item.data.csslist,
-    }"
-  >
-    <div
-      class="label"
-      :class="'label_' + labelalign"
-      :style="{ width: labelWidth + 'px' }"
-    >
+  <div class="starfish-formitem" :class="{
+    formCover: drag,
+    'starfish-vertical': labelalign != 'top',
+    [item.data.csslist?.join(' ')]: !!item.data.csslist,
+  }">
+    <div class="label" :class="'label_' + labelalign" :style="{ width: labelWidth + 'px' }">
       <label>{{ item.data.label }}{{ suffix }}</label>
       <span v-if="item.data.required" class="item_require">*</span>
-      <el-tooltip
-        v-if="item.data.tip"
-        class="item"
-        effect="dark"
-        :content="item.data.tip"
-        placement="top"
-      >
+      <el-tooltip v-if="item.data.tip" class="item" effect="dark" :content="item.data.tip" placement="top">
         <span class="tip iconfont icon-tishi"></span>
       </el-tooltip>
     </div>
-    <div
-      class="control"
-      :style="{ marginLeft: labelalign != 'top' ? labelWidth + 'px' : '' }"
-    >
+    <div class="control" :style="{ marginLeft: labelalign != 'top' ? labelWidth + 'px' : '' }">
       <div id="jsoneditor" ref="jsoneditor">
         <div class="fullScreen" @click="showCustomDialog">
           <i class="iconfont icon-quanping"></i>
@@ -38,15 +22,9 @@
       <el-main style="padding: 0">
         <el-container style="height: 100%">
           <el-main class="my-pageMain">
-            <div
-              ref="JsonViewerDialogDom"
-              style="height: calc(100% - 24px)"
-            ></div>
+            <div ref="JsonViewerDialogDom" style="height: calc(100% - 24px)"></div>
           </el-main>
-          <el-footer
-            class="my-Footer"
-            style="height: 60px; padding-top: 10px; text-align: right"
-          >
+          <el-footer class="my-Footer" style="height: 60px; padding-top: 10px; text-align: right">
             <el-button type="primary" @click="saveJson">保存</el-button>
             <el-button @click="closeDialog">关闭</el-button>
           </el-footer>
@@ -164,4 +142,3 @@ export default defineComponent({
   },
 });
 </script>
-

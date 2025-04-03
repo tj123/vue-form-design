@@ -1,80 +1,36 @@
 <template>
-  <div
-    class="starfish-formitem starfish-formitem-rule"
-    :class="{ formCover: drag, 'starfish-vertical': labelalign != 'top' }"
-  >
-    <div
-      class="label"
-      :class="'label_' + labelalign"
-      :style="{ width: labelWidth + 'px' }"
-    >
+  <div class="starfish-formitem starfish-formitem-rule"
+    :class="{ formCover: drag, 'starfish-vertical': labelalign != 'top' }">
+    <div class="label" :class="'label_' + labelalign" :style="{ width: labelWidth + 'px' }">
       <label>{{ item.data.label }}</label>
       <span v-if="item.data.required" class="weight">*</span>
-      <el-tooltip
-        v-if="item.data.tip"
-        class="item"
-        effect="dark"
-        :content="item.data.tip"
-        placement="bottom-start"
-      >
+      <el-tooltip v-if="item.data.tip" class="item" effect="dark" :content="item.data.tip" placement="bottom-start">
         <span class="tip iconfont icon-tishi"></span>
       </el-tooltip>
     </div>
-    <div
-      class="control"
-      :style="{ marginLeft: labelalign != 'top' ? labelWidth + 'px' : '' }"
-    >
-      <el-collapse
-        v-if="
-          Array.isArray(data[item.data.fieldName]) &&
-          data[item.data.fieldName].length > 0
-        "
-      >
-        <el-collapse-item
-          :title="itemList.title"
-          :name="itemList.title"
-          v-for="(itemList, index) in data[item.data.fieldName]"
-          :key="index"
-        >
+    <div class="control" :style="{ marginLeft: labelalign != 'top' ? labelWidth + 'px' : '' }">
+      <el-collapse v-if="
+        Array.isArray(data[item.data.fieldName]) &&
+        data[item.data.fieldName].length > 0
+      ">
+        <el-collapse-item :title="itemList.title" :name="itemList.title"
+          v-for="(itemList, index) in data[item.data.fieldName]" :key="index">
           <div class="collapse_enums" v-if="itemList.type == 'enum'">
-            <el-select
-              v-model="itemList.value"
-              placeholder="请选择"
-              style="width: 100%"
-              size="mini"
-            >
-              <el-option
-                v-for="items in ruleList"
-                :key="items.value"
-                :label="items.label"
-                :value="items.validator"
-              >
+            <el-select v-model="itemList.value" placeholder="请选择" style="width: 100%" size="small">
+              <el-option v-for="items in ruleList" :key="items.value" :label="items.label" :value="items.validator">
               </el-option>
             </el-select>
           </div>
           <div v-if="itemList.type == 'func'">
-            <el-button
-              type="primary"
-              @click="handleFuncEdit(itemList)"
-              size="mini"
-              >函数编辑</el-button
-            >
+            <el-button type="primary" @click="handleFuncEdit(itemList)" size="small">函数编辑</el-button>
           </div>
           <div v-if="itemList.type == 'high'">
-            <el-button
-              type="primary"
-              @click="handleFormEdit(itemList)"
-              size="mini"
-              >规则表单编辑</el-button
-            >
+            <el-button type="primary" @click="handleFormEdit(itemList)" size="small">规则表单编辑</el-button>
           </div>
-          <el-button
-            type="danger"
-            circle
-            @click="deleteRule(index)"
-            style="margin-left: 10px"
-          >
-            <el-icon><Delete /></el-icon>
+          <el-button type="danger" circle @click="deleteRule(index)" style="margin-left: 10px">
+            <el-icon>
+              <Delete />
+            </el-icon>
           </el-button>
         </el-collapse-item>
       </el-collapse>
@@ -92,36 +48,16 @@
       </el-dropdown>
     </div>
     <CustomDialog ref="codeMyDialog">
-      <div
-        class="sqlDialog"
-        style="padding: 20px; height: 100%"
-        v-if="funcItem"
-      >
-        <el-select
-          v-model="funcValue.trigger"
-          placeholder="请选择"
-          size="mini"
-          style="margin-bottom: 20px"
-        >
+      <div class="sqlDialog" style="padding: 20px; height: 100%" v-if="funcItem">
+        <el-select v-model="funcValue.trigger" placeholder="请选择" size="small" style="margin-bottom: 20px">
           <el-option label="blur" value="blur"></el-option>
           <el-option label="change" value="change"></el-option>
         </el-select>
-        <el-alert
-          title="rule是存放接收参数的对象;value是待校验的值;callback是回调函数(校验完后，要执行的操作，如抛错),mainData为表单数据"
-          type="success"
-          style="margin-bottom: 15px"
-        />
+        <el-alert title="rule是存放接收参数的对象;value是待校验的值;callback是回调函数(校验完后，要执行的操作，如抛错),mainData为表单数据" type="success"
+          style="margin-bottom: 15px" />
         <div>(rule, value, callback, mainData) => {</div>
-        <codemirror
-          v-model="funcValue.func"
-          ref="cm"
-          placeholder=""
-          mode="text/javascript"
-          :style="{ height: '320px' }"
-          :autofocus="true"
-          :indent-with-tab="true"
-          :tab-size="2"
-        />
+        <codemirror v-model="funcValue.func" ref="cm" placeholder="" mode="text/javascript" :style="{ height: '320px' }"
+          :autofocus="true" :indent-with-tab="true" :tab-size="2" />
         <div>}</div>
       </div>
       <el-footer class="my-Footer" style="height: 60px; text-align: right">
@@ -133,12 +69,8 @@
       <el-main style="padding: 0">
         <el-container style="height: 100%">
           <el-main class="my-pageMain" style="overflow: hidden">
-            <Dynamicform
-              ref="formdragger"
-              :formResult="formValue"
-              :allFormList="ruleJson"
-              :globalConfig="Object.assign({}, globalDatas, { size: 'large' })"
-            ></Dynamicform>
+            <Dynamicform ref="formdragger" :formResult="formValue" :allFormList="ruleJson"
+              :globalConfig="Object.assign({}, globalDatas, { size: 'large' })"></Dynamicform>
           </el-main>
           <el-footer class="my-Footer" style="height: 60px; text-align: right">
             <el-button type="primary" @click="saveField">保存</el-button>
@@ -232,15 +164,15 @@ export default defineComponent({
         funcValue.value = item.value
           ? JSON.parse(JSON.stringify(item.value))
           : {
-              trigger: "blur",
-              func: `/** if (value === "" || value == null) {
+            trigger: "blur",
+            func: `/** if (value === "" || value == null) {
 *  callback(new Error("请输入"));
 *} else if (!/^[0-9]*$/.test(value)) {
 *  callback(new Error("必须为数字"));
 *}
 *callback(); 
 */`,
-            };
+          };
         codeMyDialog.value.init("函数编辑", "icon-icon-bianji");
         codeMyDialog.value.show();
       },
@@ -338,25 +270,30 @@ export default defineComponent({
 .el-collapse-item {
   border: 1px solid #ebeef5;
   border-bottom-color: #e1e1e1;
+
   .el-collapse-item__header {
     background: #ebeef5;
     height: 20px;
     line-height: 20px;
     padding: 5px;
     font-size: 12px;
+
     &.is-active {
       border-bottom-color: transparent;
     }
   }
+
   .el-collapse-item__content {
     padding: 5px;
     display: flex;
     justify-content: space-between;
-    .el-button + .el-button {
+
+    .el-button+.el-button {
       margin-left: 5px;
     }
   }
 }
+
 .starfish-formitem-rule {
   .label {
     align-self: flex-start;

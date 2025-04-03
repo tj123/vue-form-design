@@ -1,26 +1,13 @@
 <template>
   <el-scrollbar class="editor_pages_left">
     <div class="filter">
-      <el-input
-        placeholder="请输入关键词进行过滤"
-        size=""
-        v-model="filterContent"
-      />
+      <el-input placeholder="请输入关键词进行过滤" size="" v-model="filterContent" />
     </div>
     <el-button text v-if="newcomponentlist.length > 0">基础控件</el-button>
-    <draggable
-      class="dragArea list-group"
-      :list="newcomponentlist"
-      :group="{ name: 'starfish-form', pull: 'clone', put: false }"
-      :sort="false"
-      item-key="id"
-    >
+    <draggable class="dragArea list-group" :list="newcomponentlist"
+      :group="{ name: 'starfish-form', pull: 'clone', put: false }" :sort="false" item-key="id">
       <template #item="{ element }">
-        <div
-          class="list-group-item"
-          :alt="element.nameCn"
-          @click.stop="clickAddControl(element)"
-        >
+        <div class="list-group-item" :alt="element.nameCn" @click.stop="clickAddControl(element)">
           <div class="form-item">
             <span class="iconfont" :class="element.icon"></span>
           </div>
@@ -29,19 +16,10 @@
       </template>
     </draggable>
     <el-button text v-if="layoutList.length > 0">布局控件</el-button>
-    <draggable
-      class="dragArea list-group"
-      :list="layoutList"
-      :group="{ name: 'starfish-form', pull: 'clone', put: false }"
-      :sort="false"
-      item-key="id"
-    >
+    <draggable class="dragArea list-group" :list="layoutList"
+      :group="{ name: 'starfish-form', pull: 'clone', put: false }" :sort="false" item-key="id">
       <template #item="{ element }">
-        <div
-          class="list-group-item"
-          :alt="element.nameCn"
-          @click.stop="clickAddControl(element)"
-        >
+        <div class="list-group-item" :alt="element.nameCn" @click.stop="clickAddControl(element)">
           <div class="form-item">
             <span class="iconfont" :class="element.icon"></span>
           </div>
@@ -153,4 +131,3 @@ export default defineComponent({
   },
 });
 </script>
-

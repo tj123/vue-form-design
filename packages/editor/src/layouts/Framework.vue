@@ -3,32 +3,21 @@
     <div class="starfish-editor-nav">
       <slot name="nav"></slot>
     </div>
-    <div
-      class="starfish-editor-content"
-      :class="!headerShow ? 'starfish-editor-content-page' : ''"
-    >
-      <div
-        class="starfish-editor-framework-left"
-        :class="leftClose ? 'hide-status' : ''"
-        :style="`width:${leftClose ? 0 : columnWidth?.left}px`"
-      >
+    <div class="starfish-editor-content" :class="!headerShow ? 'starfish-editor-content-page' : ''">
+      <div class="starfish-editor-framework-left" :class="leftClose ? 'hide-status' : ''"
+        :style="`width:${leftClose ? 0 : columnWidth?.left}px`">
         <slot name="left"></slot>
         <div class="container-left-arrow" @click="onLeftArrow"></div>
       </div>
       <!-- resizer组件 -->
       <resizer type="left"></resizer>
-      <div
-        class="starfish-editor-framework-center"
-      >
+      <div class="starfish-editor-framework-center">
         <slot name="navlist"></slot>
         <slot name="workspace"></slot>
       </div>
       <resizer type="right"></resizer>
-      <div
-        class="starfish-editor-framework-right"
-        :class="rightClose ? 'hide-status' : ''"
-        :style="`width:${rightClose ? 0 : columnWidth?.right}px`"
-      >
+      <div class="starfish-editor-framework-right" :class="rightClose ? 'hide-status' : ''"
+        :style="`width:${rightClose ? 0 : columnWidth?.right}px`">
         <slot name="propsPanel"></slot>
         <div class="container-right-arrow" @click="onRightArrow"></div>
       </div>

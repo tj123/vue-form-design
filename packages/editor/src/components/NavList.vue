@@ -1,102 +1,37 @@
 <template>
   <div class="nav_list">
     <div class="detailBtn">
-      <el-tooltip
-        class="box-item"
-        effect="dark"
-        content="保存"
-        placement="top"
-        v-if="btnIsShow('left', 'save')"
-      >
-        <span
-          class="iconfont icon-baocun"
-          :class="clearIsDisable ? 'noactive' : ''"
-          @click="handleFormSave()"
-        ></span>
+      <el-tooltip class="box-item" effect="dark" content="保存" placement="top" v-if="btnIsShow('left', 'save')">
+        <span class="iconfont icon-baocun" :class="clearIsDisable ? 'noactive' : ''" @click="handleFormSave()"></span>
       </el-tooltip>
-      <el-tooltip
-        class="box-item"
-        effect="dark"
-        content="预览"
-        placement="top"
-        v-if="btnIsShow('left', 'preview')"
-      >
-        <span
-          class="iconfont icon-icon_yulan"
-          :class="clearIsDisable ? 'noactive' : ''"
-          @click="handleFormPre()"
-        ></span>
+      <el-tooltip class="box-item" effect="dark" content="预览" placement="top" v-if="btnIsShow('left', 'preview')">
+        <span class="iconfont icon-icon_yulan" :class="clearIsDisable ? 'noactive' : ''"
+          @click="handleFormPre()"></span>
       </el-tooltip>
-      <el-tooltip
-        class="box-item"
-        effect="dark"
-        content="全屏"
-        placement="top"
-        v-if="
-          !fullscreen && btnIsShow('left', 'fullscreen') && supportFullScreen
-        "
-      >
+      <el-tooltip class="box-item" effect="dark" content="全屏" placement="top" v-if="
+        !fullscreen && btnIsShow('left', 'fullscreen') && supportFullScreen
+      ">
         <span class="iconfont icon-quanping" @click="handleFullScreen()"></span>
       </el-tooltip>
-      <el-tooltip
-        class="box-item"
-        effect="dark"
-        content="非全屏"
-        placement="top"
-        v-if="
-          fullscreen && btnIsShow('left', 'fullscreen') && supportFullScreen
-        "
-      >
+      <el-tooltip class="box-item" effect="dark" content="非全屏" placement="top" v-if="
+        fullscreen && btnIsShow('left', 'fullscreen') && supportFullScreen
+      ">
         <span class="iconfont icon-suoxiao1" @click="handleFullScreen()"></span>
       </el-tooltip>
-      <el-tooltip
-        class="box-item"
-        effect="dark"
-        content="清空"
-        placement="top"
-        v-if="btnIsShow('left', 'delete')"
-      >
-        <span
-          class="iconfont icon-shanchu1"
-          :class="clearIsDisable ? 'noactive' : ''"
-          @click="handleClear()"
-        >
+      <el-tooltip class="box-item" effect="dark" content="清空" placement="top" v-if="btnIsShow('left', 'delete')">
+        <span class="iconfont icon-shanchu1" :class="clearIsDisable ? 'noactive' : ''" @click="handleClear()">
         </span>
       </el-tooltip>
-      <el-tooltip
-        class="box-item"
-        effect="dark"
-        content="组件结构树"
-        placement="top"
-        v-if="btnIsShow('left', 'tree')"
-      >
+      <el-tooltip class="box-item" effect="dark" content="组件结构树" placement="top" v-if="btnIsShow('left', 'tree')">
         <span class="iconfont icon-tree" @click="handleTree()"> </span>
       </el-tooltip>
-      <el-tooltip
-        class="box-item"
-        effect="dark"
-        content="撤销"
-        placement="top"
-        v-if="btnIsShow('left', 'undo')"
-      >
-        <span
-          class="iconfont icon-24gl-undo3"
-          :class="historyIndex == -1 ? 'noactive' : ''"
-          @click="handleBack()"
-        ></span>
+      <el-tooltip class="box-item" effect="dark" content="撤销" placement="top" v-if="btnIsShow('left', 'undo')">
+        <span class="iconfont icon-24gl-undo3" :class="historyIndex == -1 ? 'noactive' : ''"
+          @click="handleBack()"></span>
       </el-tooltip>
-      <el-tooltip
-        class="box-item"
-        effect="dark"
-        content="重做"
-        placement="top"
-        v-if="btnIsShow('left', 'redo')"
-      >
-        <span
-          class="iconfont icon-24gl-redo3"
-          :class="historyIndex == historyLen - 1 ? 'noactive' : ''"
-          @click="handleForward()"
-        ></span>
+      <el-tooltip class="box-item" effect="dark" content="重做" placement="top" v-if="btnIsShow('left', 'redo')">
+        <span class="iconfont icon-24gl-redo3" :class="historyIndex == historyLen - 1 ? 'noactive' : ''"
+          @click="handleForward()"></span>
       </el-tooltip>
       <!-- <el-button text @click="handleFormSave()" size="small" :disabled="clearIsDisable">保存</el-button>
       <el-button text @click="handleFormPre()" size="small" :disabled="clearIsDisable">预览</el-button>
@@ -107,101 +42,37 @@
     </div>
     <div class="pageBtn">
       <div class="el-button-group" v-if="btnIsShow('right', 'viewport')">
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          content="PC"
-          placement="top"
-          v-if="btnIsShow('left', 'redo')"
-        >
-          <span
-            :class="pageType == 'PC' ? 'info' : ''"
-            @click="updatePageType('PC')"
-            ><i class="iconfont icon-diannao"></i
-          ></span>
+        <el-tooltip class="box-item" effect="dark" content="PC" placement="top" v-if="btnIsShow('left', 'redo')">
+          <span :class="pageType == 'PC' ? 'info' : ''" @click="updatePageType('PC')"><i
+              class="iconfont icon-diannao"></i></span>
         </el-tooltip>
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          content="Pad"
-          placement="top"
-          v-if="btnIsShow('left', 'redo')"
-        >
-          <span
-            :class="pageType == 'Pad' ? 'info' : ''"
-            @click="updatePageType('Pad')"
-            ><i class="iconfont icon-pingbandiannao"></i
-          ></span>
+        <el-tooltip class="box-item" effect="dark" content="Pad" placement="top" v-if="btnIsShow('left', 'redo')">
+          <span :class="pageType == 'Pad' ? 'info' : ''" @click="updatePageType('Pad')"><i
+              class="iconfont icon-pingbandiannao"></i></span>
         </el-tooltip>
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          content="H5"
-          placement="top"
-          v-if="btnIsShow('left', 'redo')"
-        >
-          <span
-            :class="pageType == 'H5' ? 'info' : ''"
-            @click="updatePageType('H5')"
-            ><i class="iconfont icon-shouji"></i
-          ></span>
+        <el-tooltip class="box-item" effect="dark" content="H5" placement="top" v-if="btnIsShow('left', 'redo')">
+          <span :class="pageType == 'H5' ? 'info' : ''" @click="updatePageType('H5')"><i
+              class="iconfont icon-shouji"></i></span>
         </el-tooltip>
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          content="导入json"
-          placement="top"
-        >
-          <span
-            type="text"
-            plain
-            @click="ImportJson"
-            v-if="btnIsShow('right', 'json-import')"
-            ><i class="iconfont icon-daoru"></i
-          ></span>
+        <el-tooltip class="box-item" effect="dark" content="导入json" placement="top">
+          <span type="text" plain @click="ImportJson" v-if="btnIsShow('right', 'json-import')"><i
+              class="iconfont icon-daoru"></i></span>
         </el-tooltip>
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          content="导出json"
-          placement="top"
-        >
-          <span
-            type="text"
-            plain
-            @click="exportJson"
-            v-if="btnIsShow('right', 'json-export')"
-            ><i class="iconfont icon-daochu"></i
-          ></span>
+        <el-tooltip class="box-item" effect="dark" content="导出json" placement="top">
+          <span type="text" plain @click="exportJson" v-if="btnIsShow('right', 'json-export')"><i
+              class="iconfont icon-daochu"></i></span>
         </el-tooltip>
       </div>
     </div>
-    <el-drawer
-      ref="drawerRef"
-      v-model="dialog"
-      title="表单结构树"
-      :before-close="handleClose"
-      direction="ltr"
-      custom-class="demo-drawer"
-    >
+    <el-drawer ref="drawerRef" v-model="dialog" title="表单结构树" :before-close="handleClose" direction="ltr"
+      custom-class="demo-drawer">
       <div class="demo-drawer__content">
         <el-input v-model="filterText" placeholder="Filter keyword" />
-        <el-tree
-          :data="tree"
-          :props="propsData"
-          ref="treeRef"
-          default-expand-all
-          :filter-node-method="filterNode"
-          @node-click="myClick"
-          style="margin-top: 20px"
-        >
+        <el-tree :data="tree" :props="propsData" ref="treeRef" default-expand-all :filter-node-method="filterNode"
+          @node-click="myClick" style="margin-top: 20px">
           <template #default="{ node, data }">
             <span class="custom-tree-node">
-              <i
-                class="iconfont"
-                :class="data.icon"
-                style="font-size: 12px; margin-right: 5px"
-              ></i>
+              <i class="iconfont" :class="data.icon" style="font-size: 12px; margin-right: 5px"></i>
               <span>{{ node.label }}</span>
               <!-- <span>
                 <i
@@ -224,12 +95,8 @@
           :extensions="extensions"
         /> -->
         <JsonCode v-model:value="code" />
-        <el-upload
-          accept="application/json"
-          class="upload-demo"
-          action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
-          :on-change="handleChange"
-        >
+        <el-upload accept="application/json" class="upload-demo"
+          action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15" :on-change="handleChange">
           <el-button type="primary">导入json文件</el-button>
         </el-upload>
       </div>

@@ -3,34 +3,17 @@
     <div class="label">
       <label>{{ item.data.label }}</label>
       <span v-if="item.data.required" class="item_require">*</span>
-      <el-tooltip
-        v-if="item.data.tip"
-        class="item"
-        effect="dark"
-        :content="item.data.tip"
-        placement="top"
-      >
+      <el-tooltip v-if="item.data.tip" class="item" effect="dark" :content="item.data.tip" placement="top">
         <span class="tip iconfont icon-tishi"></span>
       </el-tooltip>
     </div>
     <div class="control">
-      <el-button
-        style="width: 100%"
-        @click="onStyleSet"
-        :type="code ? 'primary' : ''"
-        >{{ code ? "已设置" : "设置" }}</el-button
-      >
+      <el-button style="width: 100%" @click="onStyleSet" :type="code ? 'primary' : ''">{{ code ? "已设置" : "设置"
+        }}</el-button>
       <custom-dialog ref="codeDialog" dialogclass="codeDialog" width="1000">
         <div class="custom_code">
-          <codemirror
-            v-model="code"
-            placeholder=".starfish-form-css{}"
-            :style="{ height: '400px' }"
-            :autofocus="true"
-            :extensions="extensions"
-            :indent-with-tab="true"
-            :tab-size="2"
-          />
+          <codemirror v-model="code" placeholder=".starfish-form-css{}" :style="{ height: '400px' }" :autofocus="true"
+            :extensions="extensions" :indent-with-tab="true" :tab-size="2" />
         </div>
         <el-footer class="my-Footer" style="text-align: center">
           <el-button type="primary" @click="saveCssStyle">确定</el-button>
@@ -43,7 +26,7 @@
 <script lang="ts">
 import { defineComponent, ref, getCurrentInstance } from "vue";
 import { css } from "@codemirror/lang-css";
-import {Codemirror} from 'vue-codemirror';
+import { Codemirror } from 'vue-codemirror';
 export default defineComponent({
   ControlType: "FormStyle", // 必须与文件名匹配
   isHide: true,

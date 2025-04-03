@@ -10,7 +10,8 @@
       // display: flex;
       // flex-wrap: wrap;
       display: grid;
-      grid-template-columns: repeat(4, 1fr); /* 4列，每列平均分配空间 */
+      // grid-template-columns: repeat(4, 1fr); /* 4列，每列平均分配空间 */
+      grid-template-columns: repeat(3, 1fr); /* 4列，每列平均分配空间 */
       // gap: 10px; /* 网格项之间的间隙 */
     }
 
@@ -20,8 +21,8 @@
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      margin: 7px 10px 0;
-      width: 55px;
+      // margin: 7px 10px 0;
+      // width: 55px;
       .form-item {
         width: 42px;
         height: 42px;
@@ -43,6 +44,7 @@
         }
       }
       .item-text {
+        text-align: center;
         height: 30px;
         // display: flex;
         align-items: center;
