@@ -16,7 +16,8 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build"
+    "build": "vite build",
+    "watch": "vite build --watch"
   },
   "dependencies": {
     "@babel/core": "^7.18.5",
@@ -33,7 +34,7 @@
     "keycon": "^1.1.2",
     "mitt": "^3.0.0",
     "nanoid": "^4.0.0",
-    "starfish-form": "^1.2.9",
+    "starfish-form": "workspace:^",
     "vue": "^3.2.37",
     "vue-codemirror": "6.1.1",
     "vuedraggable": "^4.1.0",
